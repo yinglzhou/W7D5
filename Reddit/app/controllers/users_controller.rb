@@ -2,6 +2,7 @@ class UsersController < ApplicationController
     before_action :require_logged_in, only: [:show, :index]
 
     def new
+        @user = User.new
         render :new
     end
 
@@ -16,7 +17,7 @@ class UsersController < ApplicationController
     end
 
     def show
-        @user = User.find_by(params[:id])
+        @user = User.find_by(id: params[:id])
 
         if logged_in?
             render :show
@@ -28,7 +29,16 @@ class UsersController < ApplicationController
 
     def create
         @user = User.new(user_params)
-        login(@user)
+        
+        if @user.save
+            # debugger
+            login(@user)
+            redirect_to user_url(@user.id)
+        else
+            flash.now[:username] = params[:user][:username]
+            render :new
+        end
+        
     end
 
     private
