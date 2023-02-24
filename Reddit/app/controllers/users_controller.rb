@@ -7,7 +7,13 @@ class UsersController < ApplicationController
 
 
     def show
+        @user = User.find_by(params[:id])
 
+        if logged_in?
+            render :show
+        else
+            redirect_to new_sessions_url
+        end
     end
 
 
@@ -16,6 +22,7 @@ class UsersController < ApplicationController
         login(@user)
     end
 
+    private
     def user_params
         params.require(:user).permit(:username, :password)
     end
