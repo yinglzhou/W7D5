@@ -27,7 +27,7 @@ class UsersController < ApplicationController
 
 
     def create
-        @user = User.find_by_credentials(user_params)
+        @user = User.new(user_params)
         login(@user)
     end
 
