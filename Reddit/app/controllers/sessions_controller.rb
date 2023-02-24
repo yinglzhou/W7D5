@@ -10,12 +10,14 @@ class SessionsController < ApplicationController
             login(@user)
             redirect_to user_url(@user.id)
         else
-            flash
+            flash.now[:errors] = ["Invalid Credentials"]
+            flash.now[:username] = params[:user][:username]
             render :new
         end
     end
 
     def destroy
-
+        logout
+        redirect_to new_sessions_url
     end
 end
